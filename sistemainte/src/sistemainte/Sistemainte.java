@@ -37,23 +37,43 @@ public class Sistemainte {
             System.out.println("Error al conectar a PostgreSQL: " + e.getMessage());
         }
 
-        //conexion oracle 
-        String urlOracle = "jdbc:oracle:thin:@localhost:1521:";
+        // prueba conexion oracle 
+        String urlOracle = "jdbc:oracle:thin:@localhost:1521:XE";
         String usuarioOracle = "SYSTEM";
-        String contraseñaOracle = "juan2003";
+        String contraseñaOracle = "DreamTeam";
 
         try {
             Connection conexionOracle = conexiones.conectarOracle(urlOracle, usuarioOracle, contraseñaOracle);
             System.out.println("Si conecto Oracle");
+            String query = "INSERT INTO Autos "
+        + "(ID_auto, Marca, Modelo, Anio, Precio, Color, TipoCombustible) "
+        + "VALUES (" + "'1', "
+        + "'Lamborghini', "
+        + "'Gallardo', "
+        + "'2010', "
+        + "'360000', "
+        + "'Rojo', "
+        + "'Super')";
+
+            System.out.println("HOLA1");
             // Realizar operaciones con la conexión a Oracle
-            
-            conexionOracle.close(); // Cerrar la conexión
+            Statement st;
+            try{
+            st = conexionOracle.createStatement();
+            System.out.println("HOLA2");
+            st.executeUpdate(query);
+            System.out.println("HOLA3");
+            conexionOracle.close();  
+            }
+            catch (Exception e) {
+            e.printStackTrace();
+        } // Fin Try Catch
         } catch (SQLException e) {
             System.out.println("Error al conectar a Oracle: " + e.getMessage());
         }
 
         //codigo para copiar las tablas de una a otra 
-        try {
+       /* try {
             Connection conexionOracle = conexiones.conectarOracle(urlOracle, usuarioOracle, contraseñaOracle);
             Connection conexionPostgreSQL = conexiones.conectarPostgreSQL(urlPostgreSQL, usuarioPostgreSQL, contraseñaPostgreSQL);
 
@@ -121,7 +141,7 @@ public class Sistemainte {
             conexionPostgreSQL.close(); // Cerrar la conexión
         } catch (SQLException e) {
             System.out.println("Error al conectar o crear disparadores/bitácora: " + e.getMessage());
-        }
+        }*/
 
     }
 }

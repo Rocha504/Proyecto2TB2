@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import static jdk.nashorn.tools.ShellFunctions.input;
+//import static jdk.nashorn.tools.ShellFunctions.input;
 
 /**
  *
@@ -321,7 +321,7 @@ public class prueba extends javax.swing.JFrame {
         System.out.println("pruebaaaaa");
         String urlPostgreSQL = "jdbc:postgresql://localhost:5432/concesionario_autos";
         String usuarioPostgreSQL = "postgres";
-        String contraseñaPostgreSQL = "juan2003";
+        String contraseñaPostgreSQL = "dreamteam";
         ArrayList<String> nombresTablas = new ArrayList<>();
         Conexiones conexiones = new Conexiones();
 
@@ -371,6 +371,8 @@ public class prueba extends javax.swing.JFrame {
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
+
+
         ArrayList<String> ids = new ArrayList<>();
 // Obtener el modelo de la JTable
         TableModel modeloTabla = tablareplica.getModel();
@@ -381,12 +383,12 @@ public class prueba extends javax.swing.JFrame {
             ids.add(id);
         }
         Conexiones conexiones = new Conexiones();
-        String urlOracle = "jdbc:oracle:thin:@localhost:1521:";
+        String urlOracle = "jdbc:oracle:thin:@localhost:1521:XE";
         String usuarioOracle = "SYSTEM";
-        String contraseñaOracle = "juan2003";
+        String contraseñaOracle = "DreamTeam";//cambiar di es necesario DreamTeam
         String urlPostgreSQL = "jdbc:postgresql://localhost:5432/concesionario_autos";
         String usuarioPostgreSQL = "postgres";
-        String contraseñaPostgreSQL = "juan2003";
+        String contraseñaPostgreSQL = "dreamteam";
 // Imprimir los IDs almacenados en el ArrayList
         for (int i = 0; i < ids.size(); i++) {
             try {
@@ -408,26 +410,31 @@ public class prueba extends javax.swing.JFrame {
                     // Obtener los valores de la columna "tabla" y "datos_nuevos"
                     String tabla = resultadoSelect.getString("tabla");
                     String datosNuevos = resultadoSelect.getString("datos_nuevos");
-
-                    // Construir la consulta de inserción en la base de datos de destino
-                    int id2 = Integer.parseInt(extractValue(datosNuevos, "id"));
-                    String marca = extractValue(datosNuevos, "marca");
-                    String modelo = extractValue(datosNuevos, "modelo");
-                    int anio = Integer.parseInt(extractValue(datosNuevos, "anio"));
-                    int precio = Integer.parseInt(extractValue(datosNuevos, "precio"));
-                    String color = extractValue(datosNuevos, "color");
-                    String tipocombustible = extractValue(datosNuevos, "tipocombustible");
-
+                    // Remove the single quotes from the input string
+                    String cleanedInput = datosNuevos.substring(2, datosNuevos.length() - 2);
+                    // Remove the parentheses from the input string
+                    String cleanedInput2 = cleanedInput.substring(1, cleanedInput.length() - 1);
+                    // Split the cleaned input string into separate values
+                    String[] values = cleanedInput2.split(",");
+                    // Separate each value into separate strings
+                    String id2 = values[0];
+                    String marca = values[1];
+                    String modelo = values[2];
+                    String anio = values[3];
+                    String precio = values[4];
+                    String color = values[5];
+                    String tipocombustible = values[6];
+                    System.out.println(datosNuevos);
                     //  System.out.println("'" + marca + "', '" + modelo + "', " + anio + ", " + precio + ", '" + color + "', '" + tipocombustible + "'");
-                    System.out.println("'" + id2 + "', '" + marca + "', '" + modelo + "', " + anio + ", " + precio + ", '" + color + "', '" + tipocombustible + "'");
+                    System.out.println("'" + id2 + "', '" + marca + "', '" + modelo + "', '" + anio + "', '" + precio + "', '" + color + "', '" + tipocombustible + "'");
 
                     /////modificar string datosnuevos consultas 
-                    String consultaInsert = "INSERT INTO " + tabla + "(ID, Marca, Modelo, Anio, Precio, Color, TipoCombustible) VALUES (" + id + ", '" + marca + "', '" + modelo + "', " + anio + ", " + precio + ", '" + color + "', '" + tipocombustible + "'" + ");";
+                    String consultaInsert = "INSERT INTO " + tabla + "(id_auto, marca, modelo, anio, precio, color, tipocombustible) VALUES ('" + id2 + "', '" + marca + "', '" + modelo + "', '" + anio + "', '" + precio + "', '" + color + "', '" + tipocombustible + "'" + ")";
                     System.out.println(consultaInsert);
                     // Ejecutar la consulta de inserción en la base de datos de destino
                     Statement statementInsert = conexionOracle.createStatement();
                     statementInsert.executeUpdate(consultaInsert);
-                    conexionOracle.commit();
+                    
 
                     System.out.println("Se realizó la inserción en la tabla " + tabla + " de la base de datos de destino.");
                 } else {
@@ -508,7 +515,7 @@ public class prueba extends javax.swing.JFrame {
         System.out.println("pruebaaaaa");
         String urlPostgreSQL = "jdbc:postgresql://localhost:5432/concesionario_autos";
         String usuarioPostgreSQL = "postgres";
-        String contraseñaPostgreSQL = "juan2003";
+        String contraseñaPostgreSQL = "dreamteam";
         ArrayList<String> nombresTablas = new ArrayList<>();
         Conexiones conexiones = new Conexiones();
 
