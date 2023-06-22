@@ -121,15 +121,24 @@ public class prueba extends javax.swing.JFrame {
         jLabel24.setText("Nombre Usuario");
         jPanel5.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 280, 130, 20));
 
+        ninstancia.setText("postgresql");
         ninstancia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ninstanciaActionPerformed(evt);
             }
         });
         jPanel5.add(ninstancia, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 160, 190, 30));
+
+        contra.setText("dreamteam");
         jPanel5.add(contra, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 320, 190, 30));
+
+        usuario.setText("postgres");
         jPanel5.add(usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 280, 190, 30));
+
+        nombrebd.setText("concesionario_autos");
         jPanel5.add(nombrebd, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 200, 190, 30));
+
+        puerto.setText("5432");
         jPanel5.add(puerto, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 240, 190, 30));
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -165,6 +174,7 @@ public class prueba extends javax.swing.JFrame {
         jLabel30.setText("Nombre Usuario");
         jPanel5.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 620, 130, 20));
 
+        ninstancia2.setText("oracle");
         ninstancia2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ninstancia2ActionPerformed(evt);
@@ -172,8 +182,12 @@ public class prueba extends javax.swing.JFrame {
         });
         jPanel5.add(ninstancia2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 500, 190, 30));
         jPanel5.add(contra2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 660, 190, 30));
+
+        usuario2.setText("SYSTEM");
         jPanel5.add(usuario2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 620, 190, 30));
         jPanel5.add(nombrebd2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 540, 190, 30));
+
+        puerto2.setText("1521");
         jPanel5.add(puerto2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 580, 190, 30));
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -187,7 +201,12 @@ public class prueba extends javax.swing.JFrame {
 
         GuardarConexion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         GuardarConexion.setText("Guardar");
-        jPanel5.add(GuardarConexion, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 780, 190, 60));
+        GuardarConexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarConexionActionPerformed(evt);
+            }
+        });
+        jPanel5.add(GuardarConexion, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 440, 190, 60));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -319,9 +338,9 @@ public class prueba extends javax.swing.JFrame {
         // busacar tablas origen
 
         System.out.println("pruebaaaaa");
-        String urlPostgreSQL = "jdbc:postgresql://localhost:5432/concesionario_autos";
+        /*String urlPostgreSQL = "jdbc:postgresql://localhost:5432/concesionario_autos";
         String usuarioPostgreSQL = "postgres";
-        String contraseñaPostgreSQL = "dreamteam";
+        String contraseñaPostgreSQL = "dreamteam";*/
         ArrayList<String> nombresTablas = new ArrayList<>();
         Conexiones conexiones = new Conexiones();
 
@@ -372,71 +391,142 @@ public class prueba extends javax.swing.JFrame {
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
 
-
         ArrayList<String> ids = new ArrayList<>();
-// Obtener el modelo de la JTable
+        ArrayList<String> operaciones = new ArrayList<>();
+        // Obtener el modelo de la JTable
         TableModel modeloTabla = tablareplica.getModel();
-
-// Recorrer las filas de la JTable y obtener los IDs
+        // Recorrer las filas de la JTable y obtener los IDs
         for (int row = 0; row < modeloTabla.getRowCount(); row++) {
             String id = (String) modeloTabla.getValueAt(row, 0);
+            String operacion = (String) modeloTabla.getValueAt(row, 2);
             ids.add(id);
+            operaciones.add(operacion);
         }
         Conexiones conexiones = new Conexiones();
-        String urlOracle = "jdbc:oracle:thin:@localhost:1521:XE";
+        /*String urlOracle = "jdbc:oracle:thin:@localhost:1521:XE";
         String usuarioOracle = "SYSTEM";
-        String contraseñaOracle = "DreamTeam";//cambiar di es necesario DreamTeam
+        String contraseñaOracle = "DreamTeam";//cambiar si es necesario DreamTeam
         String urlPostgreSQL = "jdbc:postgresql://localhost:5432/concesionario_autos";
         String usuarioPostgreSQL = "postgres";
-        String contraseñaPostgreSQL = "dreamteam";
-// Imprimir los IDs almacenados en el ArrayList
+        String contraseñaPostgreSQL = "dreamteam";*/
+        // Imprimir los IDs almacenados en el ArrayList
         for (int i = 0; i < ids.size(); i++) {
+            // ID deseado
+            int id = (Integer.parseInt(ids.get(i)));
+            // Consulta para obtener el registro con el ID deseado y operación "insercion" de la tabla bitacora en la base de datos de origen
             try {
                 // Conexión a la base de datos de origen (PostgreSQL)
                 Connection conexionPostgreSQL = conexiones.conectarPostgreSQL(urlPostgreSQL, usuarioPostgreSQL, contraseñaPostgreSQL);
+                System.out.println(urlPostgreSQL);
+                System.out.println(urlOracle);
                 // Conexión a la base de datos de destino (Oracle)
                 Connection conexionOracle = conexiones.conectarOracle(urlOracle, usuarioOracle, contraseñaOracle);
-                // ID deseado
-                int id = (Integer.parseInt(ids.get(i)));
-                System.out.println(id);
-                // Consulta para obtener el registro con el ID deseado y operación "insercion" de la tabla bitacora en la base de datos de origen
-                String consultaSelect = "SELECT tabla, datos_nuevos FROM bitacora WHERE id = ? AND operacion = 'inserción'";
-                PreparedStatement statementSelect = conexionPostgreSQL.prepareStatement(consultaSelect);
+                String consultaSelect1 = "SELECT tabla, datos_nuevos, datos_anteriores FROM bitacora WHERE id = ?";
+                PreparedStatement statementSelect = conexionPostgreSQL.prepareStatement(consultaSelect1);
                 statementSelect.setInt(1, id);
                 ResultSet resultadoSelect = statementSelect.executeQuery();
-
                 // Verificar si se obtuvo un resultado
                 if (resultadoSelect.next()) {
                     // Obtener los valores de la columna "tabla" y "datos_nuevos"
                     String tabla = resultadoSelect.getString("tabla");
                     String datosNuevos = resultadoSelect.getString("datos_nuevos");
-                    // Remove the single quotes from the input string
-                    String cleanedInput = datosNuevos.substring(2, datosNuevos.length() - 2);
-                    // Remove the parentheses from the input string
-                    String cleanedInput2 = cleanedInput.substring(1, cleanedInput.length() - 1);
-                    // Split the cleaned input string into separate values
-                    String[] values = cleanedInput2.split(",");
-                    // Separate each value into separate strings
-                    String id2 = values[0];
-                    String marca = values[1];
-                    String modelo = values[2];
-                    String anio = values[3];
-                    String precio = values[4];
-                    String color = values[5];
-                    String tipocombustible = values[6];
-                    System.out.println(datosNuevos);
-                    //  System.out.println("'" + marca + "', '" + modelo + "', " + anio + ", " + precio + ", '" + color + "', '" + tipocombustible + "'");
-                    System.out.println("'" + id2 + "', '" + marca + "', '" + modelo + "', '" + anio + "', '" + precio + "', '" + color + "', '" + tipocombustible + "'");
+                    String datosAnteriores = resultadoSelect.getString("datos_anteriores");
+                    if (tabla.equals("autos")) {//INSERTANDO EN TABLA AUTOS
+                        String operacion = operaciones.get(i);
+                        System.out.println(operacion);
+                        if (operacion.equals("inserción")) {
+                            // Remove the single quotes from the input string
+                            String cleanedInput = datosNuevos.substring(2, datosNuevos.length() - 2);
+                            // Remove the parentheses from the input string
+                            String cleanedInput2 = cleanedInput.substring(1, cleanedInput.length() - 1);
+                            // Split the cleaned input string into separate values
+                            String[] values = cleanedInput2.split(",");
+                            // Separate each value into separate strings
+                            String id2 = values[0];
+                            String marca = values[1];
+                            String modelo = values[2];
+                            String anio = values[3];
+                            String precio = values[4];
+                            String color = values[5];
+                            String tipocombustible = values[6];
+                            System.out.println(datosNuevos);
+                            //  System.out.println("'" + marca + "', '" + modelo + "', " + anio + ", " + precio + ", '" + color + "', '" + tipocombustible + "'");
+                            System.out.println("'" + id2 + "', '" + marca + "', '" + modelo + "', '" + anio + "', '" + precio + "', '" + color + "', '" + tipocombustible + "'");
 
-                    /////modificar string datosnuevos consultas 
-                    String consultaInsert = "INSERT INTO " + tabla + "(id_auto, marca, modelo, anio, precio, color, tipocombustible) VALUES ('" + id2 + "', '" + marca + "', '" + modelo + "', '" + anio + "', '" + precio + "', '" + color + "', '" + tipocombustible + "'" + ")";
-                    System.out.println(consultaInsert);
-                    // Ejecutar la consulta de inserción en la base de datos de destino
-                    Statement statementInsert = conexionOracle.createStatement();
-                    statementInsert.executeUpdate(consultaInsert);
-                    
+                            /////modificar string datosnuevos consultas 
+                            String consultaInsert = "INSERT INTO " + tabla + "(id_auto, marca, modelo, anio, precio, color, tipocombustible) VALUES ('" + id2 + "', '" + marca + "', '" + modelo + "', '" + anio + "', '" + precio + "', '" + color + "', '" + tipocombustible + "'" + ")";
+                            System.out.println(consultaInsert);
+                            // Ejecutar la consulta de inserción en la base de datos de destino
+                            Statement statementInsert = conexionOracle.createStatement();
+                            statementInsert.executeUpdate(consultaInsert);
 
-                    System.out.println("Se realizó la inserción en la tabla " + tabla + " de la base de datos de destino.");
+                            System.out.println("Se realizó la inserción en la tabla " + tabla + " de la base de datos de destino.");
+                        } else if (operacion.equals("eliminación")) {
+                            String cleanedInput = datosAnteriores.substring(2, datosAnteriores.length() - 2);
+                            // Remove the parentheses from the input string
+                            String cleanedInput2 = cleanedInput.substring(1, cleanedInput.length() - 1);
+                            // Split the cleaned input string into separate values
+                            String[] values = cleanedInput2.split(",");
+                            // Separate each value into separate strings
+                            String id2 = values[0];
+                            String consultaDelete = "DELETE FROM " + tabla + " WHERE id_auto='" + id2 + "'";
+                            System.out.println(consultaDelete);
+                            // Ejecutar la consulta de borrar en la base de datos de destino
+                            Statement statementDelete = conexionOracle.createStatement();
+                            statementDelete.executeUpdate(consultaDelete);
+                        } else if (operacion.equals("actualización")) {
+                            System.out.println("Aqui hacer updates");
+                        }
+                    } else if (tabla.equals("clientes")) {
+                        String operacion = operaciones.get(i);
+                        System.out.println(operacion);
+                        if (operacion.equals("inserción")) {
+                            // Remove the single quotes from the input string
+                            String cleanedInput = datosNuevos.substring(2, datosNuevos.length() - 2);
+                            // Remove the parentheses from the input string
+                            String cleanedInput2 = cleanedInput.substring(1, cleanedInput.length() - 1);
+                            // Split the cleaned input string into separate values
+                            String[] values = cleanedInput2.split(",");
+                            // Separate each value into separate strings
+                            String id2 = values[0];
+                            String nombre = values[1];
+                            String apellido = values[2];
+                            String direccion = values[3];
+                            String telefono = values[4];
+                            String correoelectronico = values[5];
+   
+                            System.out.println(datosNuevos);
+                            //  System.out.println("'" + marca + "', '" + modelo + "', " + anio + ", " + precio + ", '" + color + "', '" + tipocombustible + "'");
+                            System.out.println("'" + id2 + "', '" + nombre + "', '" + apellido + "', '" + direccion + "', '" + telefono + "'"+"'"+correoelectronico+"'");
+
+                            /////modificar string datosnuevos consultas 
+                            String consultaInsert = "INSERT INTO " + tabla + "(id_cliente, nombre, apellido, direccion, telefono, correoelectronico) "
+                                    + "VALUES ('" + id2 + "', '" + nombre + "', '" + apellido + "', '" + direccion + "', '" + telefono + "', '" + correoelectronico + "'" + ")";
+                            System.out.println(consultaInsert);
+                            // Ejecutar la consulta de inserción en la base de datos de destino
+                            Statement statementInsert = conexionOracle.createStatement();
+                            statementInsert.executeUpdate(consultaInsert);
+
+                            System.out.println("Se realizó la inserción en la tabla " + tabla + " de la base de datos de destino.");
+                            
+                        } else if (operacion.equals("eliminación")) {
+                            String cleanedInput = datosAnteriores.substring(2, datosAnteriores.length() - 2);
+                            // Remove the parentheses from the input string
+                            String cleanedInput2 = cleanedInput.substring(1, cleanedInput.length() - 1);
+                            // Split the cleaned input string into separate values
+                            String[] values = cleanedInput2.split(",");
+                            // Separate each value into separate strings
+                            String id2 = values[0];
+                            String consultaDelete = "DELETE FROM " + tabla + " WHERE id_clientes='" + id2 + "'";
+                            System.out.println(consultaDelete);
+                            // Ejecutar la consulta de borrar en la base de datos de destino
+                            Statement statementDelete = conexionOracle.createStatement();
+                            statementDelete.executeUpdate(consultaDelete);
+                        } else if (operacion.equals("actualización")) {
+                            System.out.println("Aqui hacer updates");
+                        }
+                    }
+
                 } else {
                     System.out.println("No se encontró ningún registro con ID " + id + " y operación 'insercion' en la tabla bitacora.");
                 }
@@ -446,7 +536,7 @@ public class prueba extends javax.swing.JFrame {
                 conexionOracle.close();
 
             } catch (SQLException e) {
-                System.out.println("Error al ejecutar la consulta o realizar la inserción: " + e.getMessage());
+                System.out.println("Error al ejecutar la consulta: " + e.getMessage());
             }
 
         }
@@ -513,9 +603,9 @@ public class prueba extends javax.swing.JFrame {
 
         tablareplica.setModel(modeloTabla2);
         System.out.println("pruebaaaaa");
-        String urlPostgreSQL = "jdbc:postgresql://localhost:5432/concesionario_autos";
+        /*String urlPostgreSQL = "jdbc:postgresql://localhost:5432/concesionario_autos";
         String usuarioPostgreSQL = "postgres";
-        String contraseñaPostgreSQL = "dreamteam";
+        String contraseñaPostgreSQL = "dreamteam";*/
         ArrayList<String> nombresTablas = new ArrayList<>();
         Conexiones conexiones = new Conexiones();
 
@@ -573,58 +663,71 @@ public class prueba extends javax.swing.JFrame {
     }//GEN-LAST:event_ninstancia2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //probar conexion oracle        // TODO add your handling code here:
-        String instancia=ninstancia.getText();
-        String nombre=nombrebd.getText();
-        String puerto2=puerto.getText();
-        String usuario2=usuario.getText();
-        String contrase=contra.getText();
-      //   String urlPostgreSQL = "jdbc:postgresql://localhost:5432/concesionario_autos";
-     //  String urlPostgreSQL2 = "jdbc:postgresql://localhost:5432/concesionario_autos";
-       String urlPostgreSQL="jdbc:"+instancia+"://localhost:"+puerto2+"/"+nombre;
-        String usuarioPostgreSQL = usuario2;
-        String contraseñaPostgreSQL = contrase;
-        
+
+        String instancia = ninstancia.getText();
+        String nombre = nombrebd.getText();
+        String puerto2 = puerto.getText();
+        String usuario2 = usuario.getText();
+        String contrase = contra.getText();
+        //   String urlPostgreSQL = "jdbc:postgresql://localhost:5432/concesionario_autos";
+        //  String urlPostgreSQL2 = "jdbc:postgresql://localhost:5432/concesionario_autos";
+        String urlPostgreSQL2 = "jdbc:" + instancia + "://localhost:" + puerto2 + "/" + nombre;
+        urlPostgreSQL = urlPostgreSQL2;
+        usuarioPostgreSQL = usuario2;
+        contraseñaPostgreSQL = contrase;
+        usuarioPostgreSQL = this.usuario.getText();
+        contraseñaPostgreSQL = this.contra.getText();
+
         Conexiones conexiones = new Conexiones();
         try {
             Connection conexionPostgreSQL = conexiones.conectarPostgreSQL(urlPostgreSQL, usuarioPostgreSQL, contraseñaPostgreSQL);
 
             conexionPostgreSQL.close(); // Cerrar la conexión
 
-             JOptionPane.showMessageDialog(null, "Si conecto postgress exitosamente");
+            JOptionPane.showMessageDialog(null, "Si conecto postgress exitosamente");
+            p1 = 1;
             conexionPostgreSQL.close(); // Cerrar la conexión
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al conectar a PostgreSQL: " + e.getMessage());
-           
+
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // probar conexion oracle 
-         String instancia=ninstancia2.getText();
-        String nombre=nombrebd2.getText();
-        String puerto=puerto2.getText();
-        String usuario=usuario2.getText();
-        String contrase=contra2.getText();
+        String instancia = ninstancia2.getText();
+        String nombre = nombrebd2.getText();
+        String puerto = puerto2.getText();
+        String usuario = usuario2.getText();
+        String contrase = contra2.getText();
         //  String urlOracle = "jdbc:oracle:thin:@localhost:1521:";
-           String urlOracle = "jdbc:"+instancia+":thin:@localhost:"+puerto+":"+nombre;
-        String usuarioOracle = usuario;
-        String contraseñaOracle = contrase;
-         Conexiones conexiones = new Conexiones();
+        String urlOracle2 = "jdbc:" + instancia + ":thin:@localhost:" + puerto + ":" + nombre;
+        urlOracle = urlOracle2;
+        usuarioOracle = this.usuario2.getText();
+        contraseñaOracle = this.contra2.getText();
+        Conexiones conexiones = new Conexiones();
         try {
             Connection conexionOracle = conexiones.conectarOracle(urlOracle, usuarioOracle, contraseñaOracle);
-           
-              JOptionPane.showMessageDialog(null, "Si conecto oracle exitosamente");
+
+            JOptionPane.showMessageDialog(null, "Si conecto oracle exitosamente");
             // Realizar operaciones con la conexión a Oracle
-            
+            p2 = 1;
+
             conexionOracle.close(); // Cerrar la conexión
         } catch (SQLException e) {
-              JOptionPane.showMessageDialog(null, "Error al conectar a Oracle: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al conectar a Oracle: " + e.getMessage());
             System.out.println("Error al conectar a Oracle: " + e.getMessage());
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void GuardarConexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarConexionActionPerformed
+        if (p1 == 1 && p2 == 1) {
+            JOptionPane.showMessageDialog(null, "Si Guardaron las Conexiones exitosamente");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se Guardaron las conexiones /n asegurese de probar ambas antes de guardar.");
+        }
+    }//GEN-LAST:event_GuardarConexionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -714,4 +817,15 @@ public class prueba extends javax.swing.JFrame {
     private javax.swing.JTextField usuario;
     private javax.swing.JTextField usuario2;
     // End of variables declaration//GEN-END:variables
+    String urlPostgreSQL;
+    String usuarioPostgreSQL;
+    String contraseñaPostgreSQL;
+
+    String urlOracle;
+    String usuarioOracle;
+    String contraseñaOracle;
+
+    int p1;
+    int p2;
+
 }
