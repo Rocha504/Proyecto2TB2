@@ -517,7 +517,7 @@ public class prueba extends javax.swing.JFrame {
                             String[] values = cleanedInput2.split(",");
                             // Separate each value into separate strings
                             String id2 = values[0];
-                            String consultaDelete = "DELETE FROM " + tabla + " WHERE id_clientes='" + id2 + "'";
+                            String consultaDelete = "DELETE FROM " + tabla + " WHERE id_cliente='" + id2 + "'";
                             System.out.println(consultaDelete);
                             // Ejecutar la consulta de borrar en la base de datos de destino
                             Statement statementDelete = conexionOracle.createStatement();
@@ -526,6 +526,55 @@ public class prueba extends javax.swing.JFrame {
                             System.out.println("Aqui hacer updates");
                         }
                     }
+                    else
+                        if(tabla.equals("ventas")){
+                            String operacion = operaciones.get(i);
+                        System.out.println(operacion);
+                        if (operacion.equals("inserción")) {
+                            // Remove the single quotes from the input string
+                            String cleanedInput = datosNuevos.substring(2, datosNuevos.length() - 2);
+                            // Remove the parentheses from the input string
+                            String cleanedInput2 = cleanedInput.substring(1, cleanedInput.length() - 1);
+                            // Split the cleaned input string into separate values
+                            String[] values = cleanedInput2.split(",");
+                            // Separate each value into separate strings
+                            String id2 = values[0];
+                            String autoid = values[1];
+                            String clienteid = values[2];
+                            String fechaventa = values[3];
+                            String precioventa = values[4];
+   
+                            System.out.println(datosNuevos);
+                            //  System.out.println("'" + marca + "', '" + modelo + "', " + anio + ", " + precio + ", '" + color + "', '" + tipocombustible + "'");
+                            System.out.println("'" + id2 + "', '" + autoid + "', '" + clienteid + "', '" + fechaventa + "', '" + precioventa + "'");
+
+                            /////modificar string datosnuevos consultas 
+                            String consultaInsert = "INSERT INTO " + tabla + "(id_venta, autoid, clienteid, fechaventa, precioventa) "
+                                    + "VALUES ('" + id2 + "', '" + autoid + "', '" + clienteid + "', '" + fechaventa + "', '" + precioventa + "')";
+                            System.out.println(consultaInsert);
+                            // Ejecutar la consulta de inserción en la base de datos de destino
+                            Statement statementInsert = conexionOracle.createStatement();
+                            statementInsert.executeUpdate(consultaInsert);
+
+                            System.out.println("Se realizó la inserción en la tabla " + tabla + " de la base de datos de destino.");
+                            
+                        } else if (operacion.equals("eliminación")) {
+                            String cleanedInput = datosAnteriores.substring(2, datosAnteriores.length() - 2);
+                            // Remove the parentheses from the input string
+                            String cleanedInput2 = cleanedInput.substring(1, cleanedInput.length() - 1);
+                            // Split the cleaned input string into separate values
+                            String[] values = cleanedInput2.split(",");
+                            // Separate each value into separate strings
+                            String id2 = values[0];
+                            String consultaDelete = "DELETE FROM " + tabla + " WHERE id_venta='" + id2 + "'";
+                            System.out.println(consultaDelete);
+                            // Ejecutar la consulta de borrar en la base de datos de destino
+                            Statement statementDelete = conexionOracle.createStatement();
+                            statementDelete.executeUpdate(consultaDelete);
+                        } else if (operacion.equals("actualización")) {
+                            System.out.println("Aqui hacer updates");
+                        }
+                        }
 
                 } else {
                     System.out.println("No se encontró ningún registro con ID " + id + " y operación 'insercion' en la tabla bitacora.");
